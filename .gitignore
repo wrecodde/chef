@@ -1,3 +1,6 @@
+# ignore python cache files
+__pycache__/
+
 # basically ignore static files directory
 *.js
 *.css
