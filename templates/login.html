@@ -32,9 +32,9 @@
               <label for="password">Password</label>
               <input type="password" class="form-control" id="password" placeholder="password">
             </div>
-            <button type="submit" class="btn btn-primary px-3" id="pressure-btn">Login</button>
+            <div id="feedback" class="my-3">[[ msg ]]</div>
+            <button type="submit" class="btn btn-primary px-3" id="login-btn">Login</button>
             <span>or <a href="/signup">Signup</a></span>
-            <div id="feedback" class="d-inline ml-3"></div>
           </form>
         </div>
       </div>
@@ -44,27 +44,7 @@
 </body>
   <!-- scripts -->
   <script src="{{ static_url('jquery/jquery.min.js') }}"></script>
+  <script src="{{ static_url('vue/vue.min.js') }}"></script>
   <script src="{{ static_url('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-  <script>
-  $('#pressure-btn').on('click', function(e){
-    e.preventDefault();
-    $.ajax(
-      '/connect',
-      {
-      method: 'POST',
-      data: {
-        full_name: $('#full_name').val(),
-        email_address: $('#email_address').val(),
-        phone_number: $('#phone_number').val()
-      }
-    }).done(function(data){
-      let resp = JSON.parse(data);
-      let message = resp.message;
-      let feedback = '<span class="text-light">' + message + '</span>';
-      $('div#feedback').empty();
-      $('div#feedback').append(feedback);
-    });
-  });
-  </script>
+  <script src="{{ static_url('custom/scripts/app.js') }}"></script>
 </html>

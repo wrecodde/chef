@@ -26,18 +26,22 @@ class SignupPage(BaseHandler):
     
     def post(self):
         username = self.get_argument('username', '')
-        email = self.get_argument('email')
-        password = self.get_argument('password')
+        email = self.get_argument('email', '')
+        password = self.get_argument('password', '')
 
-        account_status = accounts.create_account(username, email, password)
-        self.write(json.dumps(account_status))
+        auth_status = accounts.create_account(username, email, password)
+        self.write(json.dumps(auth_status))
 
 class LoginPage(BaseHandler):
     def get(self):
         self.render('login.html')
     
     def post(self):
-        pass
+        username = self.get_argument('username', '')
+        password = self.get_argument('password', '')
+
+        auth_status = accounts.confirm_account(username, password)
+        self.write(json.dumps(auth_status))
 
 
 from tornado.options import define
