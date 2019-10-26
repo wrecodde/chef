@@ -6,6 +6,8 @@ import tornado.httpclient
 import io, os, json
 import secrets, random
 
+import chef
+from chef import accounts
 
 class BaseHandler(tornado.web.RequestHandler):
     pass
@@ -23,7 +25,12 @@ class SignupPage(BaseHandler):
         self.render('signup.html')
     
     def post(self):
-        pass
+        username = self.get_argument('username', '')
+        email = self.get_argument('email')
+        password = self.get_argument('password')
+
+        account_status = accounts.create_account(username, email, password)
+        self.write(json.dumps(account_status))
 
 class LoginPage(BaseHandler):
     def get(self):
@@ -34,7 +41,7 @@ class LoginPage(BaseHandler):
 
 
 from tornado.options import define
-define("port", default=3310, type=int)
+define("port", default=3312, type=int)
 
 handlers = [
     (r"/", IndexPage),
