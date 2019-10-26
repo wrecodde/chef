@@ -3,7 +3,15 @@ var feedback = new Vue({
   delimiters: ['[[', ']]'],
   el: '#feedback',
   data: {
-    msg: ''
+    msg: '',
+    hasError: false,
+  },
+  computed: {
+    classObject: function(){
+      return {
+        'text-danger': this.hasError
+      }
+    }
   }
 })
 
@@ -21,9 +29,14 @@ let userSignup = function(){
       'success': function(resp){
         resp = JSON.parse(resp);
         if (resp.status == 'success'){
+          feedback.hasError = false;
           feedback.msg = resp.message;
-          // redirect to login page
+          setTimeout(function(){
+            // redirect to login page
+            document.location = "/login";
+          }, 1000)
         }else if (resp.status == 'error'){
+          feedback.hasError = true;
           feedback.msg = resp.message;
         }
       }
@@ -43,12 +56,15 @@ let userSignup = function(){
         'success': function(resp){
           resp = JSON.parse(resp)
           if (resp.status == 'success') {
+            feedback.hasError = false,
             feedback.msg = resp.message;
-            // wait one second and then redirect to 'destination' page
+            // set cookies and redirect
             setTimeout(function(){
               //redirection goes here
+              document.location = "/about";
             }, 1000)
           } else if (resp.status == 'error') {
+            feedback.hasError = true,
             feedback.msg = resp.message;
           }
         }

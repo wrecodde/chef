@@ -32,7 +32,7 @@
               <label for="password">Password</label>
               <input type="password" class="form-control" id="password" placeholder="password">
             </div>
-            <div id="feedback" class="my-3">[[ msg ]]</div>
+            <div id="feedback" class="my-3" v-bind:class="classObject">[[ msg ]]</div>
             <button type="submit" class="btn btn-primary px-3" id="login-btn">Login</button>
             <span>or <a href="/signup">Signup</a></span>
           </form>
