@@ -1,54 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% extends 'base.html' %}
 
-  <link rel="stylesheet" href="{{ static_url('bootstrap/css/bootstrap.min.css') }}">
-  <title>Chef - About</title>
-</head>
-<body class="bg-dark">
-  <div class="container-fluid">
-    <!-- nav -->
-    <nav class="navbar navbar-expand-md navbar-dark">
-      <a href="/" class="navbar-brand">Chef</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+{% block title %}
+<title>Chef - About</title>
+{% end block %}
 
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ml-auto">
-          <li class="nva-item">
-            <a href="/login" class="nav-link">Login</a>
-          </li>
-          <li class="nav-item">
-            <a href="/signup" class="nav-link">Signup</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- end of nav -->
-
-    <!-- page content -->
-    <div class="container">
-      <div class="row justify-content-center my-5">
-        <div class="col-md-8">
-          <div class="text-muted">
-            <h1 class="display-4 text-white">About Chef</h1>
-            <p>Have at it.. let your creativity loose.</p>
-            <p>Get started quick on other projects</p>
-            <hr class="my-4">
-            <p>Made awesome by Deji Joseph</p>
-          </div>
-        </div>
+{% block page_content %}
+<div class="container">
+  <div class="row justify-content-center my-5">
+    <div class="col-md-8">
+      <div class="text-muted">
+        <h1 class="display-4 text-white">About Chef</h1>
+        <p>Have at it.. let your creativity loose.</p>
+        <p>Get started quick on other projects</p>
+        <hr class="my-4">
+        <p>Made awesome by Deji Joseph</p>
       </div>
     </div>
-    <!-- end of page content -->
   </div>
-
-</body>
-  <!-- scripts -->
-  <script src="{{ static_url('jquery/jquery.min.js') }}"></script>
-  <script src="{{ static_url('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-</html>
+</div>
+{% end block %}

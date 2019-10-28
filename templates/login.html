@@ -1,51 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% extends 'base.html' %}
 
-  <link rel="stylesheet" href="{{ static_url('bootstrap/css/bootstrap.min.css') }}">
-  <title>Chef - Login</title>
-</head>
-<body class="bg-dark">
-  <div class="container-fluid">
-    <!-- nav -->
-    <nav class="navbar navbar-expand-md navbar-dark">
-      <a href="/" class="navbar-brand">Chef</a>
-    </nav>
-    <!-- end of nav -->
+{% block title %}
+<title>Chef - Login</title>
+{% end block %}
 
-    <!-- page content -->
-    <div class="container">
-      <div class="row justify-content-center my-5">
-        <div class="col-md-4">
-          <form action="/login" method="POST">
-            <div class="form-group">
-              <p class="display-4">Login.</p>
-            </div>
-            <div class="form-group">
-              <label for="username">Username</label>
-              <input type="username" class="form-control" id="username" placeholder="username">
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="password">
-            </div>
-            <div id="feedback" class="my-3" v-bind:class="classObject">[[ msg ]]</div>
-            <button type="submit" class="btn btn-primary px-3" id="login-btn">Login</button>
-            <span>or <a href="/signup">Signup</a></span>
-          </form>
+{% block nav %}
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="/" class="navbar-brand">Chef</a>
+</nav>
+{% end block %}
+
+{% block page_content %}
+<div class="container">
+  <div class="row justify-content-center my-5">
+    <div class="col-md-4">
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <p class="display-4">Login.</p>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="username" class="form-control" id="username" placeholder="username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="password">
+        </div>
+        <div id="feedback" class="my-3" v-bind:class="classObject">[[ msg ]]</div>
+        <button type="submit" class="btn btn-primary px-3" id="login-btn">Login</button>
+        <span>or <a href="/signup">Signup</a></span>
+      </form>
     </div>
-    <!-- end of page content -->
   </div>
-</body>
-  <!-- scripts -->
-  <script src="{{ static_url('jquery/jquery.min.js') }}"></script>
-  <script src="{{ static_url('jquery/jquery.cookie.js') }}"></script>
-  <script src="{{ static_url('vue/vue.min.js') }}"></script>
-  <script src="{{ static_url('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ static_url('custom/scripts/util.js') }}"></script>
-</html>
+</div>
+{% end block %}
