@@ -10,15 +10,35 @@ import chef
 from chef import accounts
 
 class BaseHandler(tornado.web.RequestHandler):
-    pass
+    def get_current_user(self):
+        # internal method: does not directly return data to frontend
+        auth_token = self.get_cookie('auth_token')
+        if not auth_token:
+            query = {
+                'status': 'error',
+                'msg': 'User is not logged in',
+                'user': None
+            }
+            # how shouled this be handled?
+            # raise error or pass error message to caller
+            # if so, allers will have to check that they've gootten back an actual user
+            return query['user']
+        query = {
+            'status': 'success',
+            'msg': 'User is logged in',
+            'user': accounts.get_account(auth_token)
+        }
+        return query['user']
     
 class IndexPage(BaseHandler):
     def get(self):
-       self.render('index.html')
+        user = self.get_current_user()
+        self.render('index.html', user=user)
 
 class AboutPage(BaseHandler):
     def get(self):
-        self.render('about.html')
+        user = self.get_current_user()
+        self.render('about.html', user=user)
 
 class SignupPage(BaseHandler):
     def get(self):

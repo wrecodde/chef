@@ -59,6 +59,7 @@ let userSignup = function(){
             feedback.hasError = false,
             feedback.msg = resp.message;
             // set cookies and redirect
+            $.cookie('auth_token', resp.auth_token, {})
             setTimeout(function(){
               //redirection goes here
               document.location = "/about";
@@ -72,6 +73,13 @@ let userSignup = function(){
     );
   }
 
+  let userLogout = function(){
+    // user is logging out: delete saved cookies
+    // and reload current page
+    $.cookie('auth_token', '')
+    document.location = document.location;
+  }
+
 //  event listeners
 $('#signup-btn').on('click', function(e){
   e.preventDefault();
@@ -81,4 +89,9 @@ $('#signup-btn').on('click', function(e){
 $('#login-btn').on('click', function(e){
   e.preventDefault();
   userLogin();
+})
+
+$('#logout-btn').on('click', function(e){
+  e.preventDefault();
+  userLogout();
 })

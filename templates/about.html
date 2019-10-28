@@ -10,6 +10,11 @@
     <div class="col-md-8">
       <div class="text-muted">
         <h1 class="display-4 text-white">About Chef</h1>
+
+        {% if user %}
+          <p>Hi, <span class="text-primary">{{user['username']}}</span></p>
+        {% end if %}
+
         <p>Have at it.. let your creativity loose.</p>
         <p>Get started quick on other projects</p>
         <hr class="my-4">

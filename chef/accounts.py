@@ -1,5 +1,10 @@
 import string, random
 
+def get_account(auth_token):
+    # function is responsible for splitting auth_token
+    # into authorization (authr) and authentication (auhtn) components
+    # fetch user data using authr and confirm validity using authn
+    return {'username': 'bobthebuilder', 'password': 'greatestbuilderever'}
 
 def create_account(username, email, password):
     # some functionality is to be added here
