@@ -1,4 +1,4 @@
-import string, random
+import json, string, random
 import uuid
 
 from . import util
@@ -11,7 +11,14 @@ def get_account(auth_token):
     # function is responsible for splitting auth_token
     # into authorization (authr) and authentication (auhtn) components
     # fetch user data using authr and confirm validity using authn
-    return {'username': 'bobthebuilder', 'password': 'greatestbuilderever'}
+
+    # can we assume that possession of some auth_token is as good as security goes?
+    try:
+        user_account = db.User.objects.get(auth_token=auth_token)
+        user = json.loads(user_account.to_json())
+        return user
+    except:
+        return {'user': 'Invalid credentials provided'}
 
 def create_account(username, email, password, user_type='user'):
     # functionality as well as validity is being worked on
@@ -40,7 +47,7 @@ def create_account(username, email, password, user_type='user'):
 def confirm_account(username, password):
     # functionality as well as validity is being worked on
     user = util.get_user_account(username)
-    
+
     try:
         if user['exists']:
             authd = util.compare_password(user['password'], password)
