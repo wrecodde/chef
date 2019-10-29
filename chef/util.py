@@ -11,7 +11,7 @@ def compare_password(password, check):
 
 def get_user_account(username):
     try:
-        user = db.User.objects.get(username=username)
+        user = db.Users.objects.get(username=username)
         return {
             'exists': True,
             'password': user.password,
@@ -25,7 +25,7 @@ def validate_email(email):
     # a method to check the existence of a Document and responds
     # with errors if it does not exist
     try:
-        db.User.objects.get(email=email)
+        db.Users.objects.get(email=email)
         email_check = {'status':False, 'msg':'Email address is in use'}
     except db.DoesNotExist:
         email_check = {'status':True, 'msg':'Email address is not in use'}
@@ -39,7 +39,7 @@ def validate_username(username):
     # a method to check the existence of a Document and responds
     # with errors if it does not exist
     try:
-        db.User.objects.get(username=username)
+        db.Users.objects.get(username=username)
         username_check = {'status':False, 'msg':'Username is in use'}
     except db.DoesNotExist:
         username_check = {'status':True, 'msg':'Username is not in use'}

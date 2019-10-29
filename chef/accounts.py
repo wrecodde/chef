@@ -14,7 +14,7 @@ def get_account(auth_token):
 
     # can we assume that possession of some auth_token is as good as security goes?
     try:
-        user_account = db.User.objects.get(auth_token=auth_token)
+        user_account = db.Users.objects.get(auth_token=auth_token)
         user = json.loads(user_account.to_json())
         return user
     except:
@@ -26,7 +26,7 @@ def create_account(username, email, password, user_type='user'):
     
     try:
         if check['valid']:
-            user = db.User(
+            user = db.Users(
                 email=email,
                 username=username,
                 password=password,

@@ -4,7 +4,7 @@ from mongoengine import *
 
 # Model/Schema definitions
 
-class User(Document):
+class Users(Document):
     email = StringField(required=True)
     username = StringField(required=True, max_length=24)
     password = StringField(required=True)
@@ -21,7 +21,7 @@ def start():
         print('\nMongoDB Config not set\n')
         raise
 
-    connect('chef-db', alias='default', host=MONGO_URL, port=int(MONGO_PORT))
+    connect('chef', alias='default', host=MONGO_URL, port=int(MONGO_PORT))
 
 if __name__ == "__main__":
     start()    
