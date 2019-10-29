@@ -21,7 +21,7 @@ class BaseHandler(tornado.web.RequestHandler):
             }
             # how shouled this be handled?
             # raise error or pass error message to caller
-            # if so, allers will have to check that they've gootten back an actual user
+            # if so, callers will have to check that they've gootten back an actual user
             return query['user']
         query = {
             'status': 'success',
