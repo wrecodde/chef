@@ -7,10 +7,18 @@ def encrypt_password(password):
     return password
 
 def compare_password(password, check):
-    return password == check 
+    return password == check
 
-def validate_password(password):
-    return True
+def get_user_account(username):
+    try:
+        user = db.User.objects.get(username=username)
+        return {
+            'exists': True,
+            'password': user.password,
+            'auth_token': user.auth_token
+        }
+    except:
+        return {'exists':False}
 
 def validate_email(email):
     # MongoEngine (at least as far as I know now) does not provide

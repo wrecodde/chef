@@ -14,8 +14,7 @@ def get_account(auth_token):
     return {'username': 'bobthebuilder', 'password': 'greatestbuilderever'}
 
 def create_account(username, email, password, user_type='user'):
-    # functionality being added
-    # validity is up next
+    # functionality as well as validity is being worked on
     check = util.validate_new_account(email, username, password)
     
     try:
@@ -25,7 +24,8 @@ def create_account(username, email, password, user_type='user'):
                 username=username,
                 password=password,
                 user_type=user_type,
-                user_id=str(uuid.uuid4())
+                user_id=str(uuid.uuid4()),
+                auth_token=''.join(random.choices(string.ascii_lowercase, k=16))
             )
             user.save()
             op_status = {'status': 'success', 'message': 'Account created successfully'}
@@ -38,17 +38,20 @@ def create_account(username, email, password, user_type='user'):
     return op_status
 
 def confirm_account(username, password):
-    # functionality to be added
+    # functionality as well as validity is being worked on
+    user = util.get_user_account(username)
+    
     try:
-        op_status = {
-            'status': 'success',
-            'message': 'User authenticated',
-            'auth_token': ''.join(random.choices(string.ascii_lowercase, k=16),)
-        }
+        if user['exists']:
+            authd = util.compare_password(user['password'], password)
+            if authd:
+                op_status = {'status': 'success', 'message': 'User authenticated', 'auth_token': user['auth_token']}
+            else:
+                op_status = {'status': 'error', 'message': 'Incorrect user credentials'}
+        else:
+            op_status = {'status': 'error', 'message': 'Incorrect user credentials'}
     except:
-        op_status = {
-            'status': 'error',
-            'message': 'Incorrect user credentials'
-        }
+        raise
+        op_status = {'status': 'error', 'message': 'Incorrect user credentials'}
 
-    return random.choice([success, error])
+    return op_status
