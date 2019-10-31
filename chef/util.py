@@ -1,13 +1,41 @@
+import os, json, secrets
+
+import jwt
+
+from hashlib import blake2b
+from hmac import compare_digest
+
 try:
     from . import database as db
 except:
     import database as db
 
-def encrypt_password(password):
-    return password
+try:
+    SECRET_KEY = bytes(os.environ['SECRET_KEY'], 'utf-8')
+    AUTH_SIZE = int(os.environ['AUTH_SIZE'])
+except:
+    print('\nSecurity hash config not set\n')
+    raise
 
-def compare_password(password, check):
-    return password == check
+
+def encrypt_password(password):
+    h = blake2b(digest_size=AUTH_SIZE, key=SECRET_KEY)
+    h.update(bytes(password, 'utf-8'))
+    return h.hexdigest().encode('utf-8')
+
+def verify_password(known_key, password):
+    return compare_digest(bytes(known_key, 'utf-8'), encrypt_password(password))
+
+def generate_auth_token(user_type, username):
+    # generate_auth_token can be called as needed for scenarios such as
+    # new accounts, password change, new token on request...
+
+    payload = {
+        'user_type': user_type,
+        'username': username,
+        'salt': secrets.token_hex(8)
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
 def get_user_account(username):
     try:

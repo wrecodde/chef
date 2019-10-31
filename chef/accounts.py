@@ -29,10 +29,10 @@ def create_account(username, email, password, user_type='user'):
             user = db.Users(
                 email=email,
                 username=username,
-                password=password,
+                password=util.encrypt_password(password),
                 user_type=user_type,
                 user_id=str(uuid.uuid4()),
-                auth_token=''.join(random.choices(string.ascii_lowercase, k=16))
+                auth_token=util.generate_auth_token(user_type, username)
             )
             user.save()
             op_status = {'status': 'success', 'message': 'Account created successfully'}
@@ -50,7 +50,7 @@ def confirm_account(username, password):
 
     try:
         if user['exists']:
-            authd = util.compare_password(user['password'], password)
+            authd = util.verify_password(user['password'], password)
             if authd:
                 op_status = {'status': 'success', 'message': 'User authenticated', 'auth_token': user['auth_token']}
             else:
