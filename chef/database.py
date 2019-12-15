@@ -15,13 +15,12 @@ class Users(Document):
 # Management
 def start():
     try:
-        MONGO_URL = os.environ['MONGO_URL']
-        MONGO_PORT = os.environ['MONGO_PORT']
+        MONGODB_URI = os.getenv('MONGODB_URI')
     except:
         print('\nMongoDB Config not set\n')
         raise
 
-    connect('chef', alias='default', host=MONGO_URL, port=int(MONGO_PORT))
+    connect('chef', alias='default', host=MONGODB_URI)
 
 if __name__ == "__main__":
     start()    
