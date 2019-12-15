@@ -7,7 +7,7 @@ import io, os, json
 import secrets, random
 
 import chef
-from chef import accounts
+from chef import accounts, gallery
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -63,6 +63,14 @@ class LoginPage(BaseHandler):
         auth_status = accounts.confirm_account(username, password)
         self.write(json.dumps(auth_status))
 
+class GalleryPage(BaseHandler):
+    def get(self):
+        self.render('gallery.html')
+    
+    def post(self):
+        # processor for media file (pictures) upload
+        pass
+
 
 from tornado.options import define
 define("port", default=3312, type=int)
@@ -71,7 +79,8 @@ handlers = [
     (r"/", IndexPage),
     (r"/about", AboutPage),
     (r"/signup", SignupPage),
-    (r"/login", LoginPage)
+    (r"/login", LoginPage),
+    (r"/gallery", GalleryPage)
 ]
 
 # switch debug mode on or off
