@@ -29,6 +29,17 @@ class BaseHandler(tornado.web.RequestHandler):
             'user': accounts.get_account(auth_token)
         }
         return query['user']
+
+class APIHandler(tornado.web.RequestHandler):
+    def get_auth_token(self):
+        # token should be in POST request body
+        token = self.get_argument('auth_token')
+        if token is not None:
+            return token
+        else:
+            # try getting auth_token from cookie
+            # if that fails, return None
+            return self.get_cookie('auth_token', None)
     
 class IndexPage(BaseHandler):
     def get(self):
@@ -71,6 +82,43 @@ class GalleryPage(BaseHandler):
         # processor for media file (pictures) upload
         pass
 
+# the following handlers are strictly related with the api
+class UserSignupEP(APIHandler):
+    def post(self):
+        username = self.get_argument('username', '')
+        email = self.get_argument('email', '')
+        password = self.get_argument('password', '')
+
+        status = accounts.create_account(username, email, password)
+        self.write(json.dumps(status))
+
+class UserLoginEP(APIHandler):
+    def post(self):
+        username = self.get_argument('username', '')
+        password = self.get_argument('password', '')
+
+        status = accounts.confirm_account(username, password)
+        self.write(json.dumps(status))
+
+class FetchUserEP(APIHandler):
+    def post(self):
+        # auth token must be provided in request body
+        auth = self.get_auth_token()
+        print(auth)
+        if not auth:
+            resp = {
+                'status': 'error',
+                'msg': 'Authentication credentials not provided',
+                'data': None
+            }
+            self.write(resp)
+        
+        resp = {
+            'status': 'success',
+            'msg': 'User is logged in',
+            'data': accounts.get_account(auth)
+        }
+        self.write(resp)
 
 from tornado.options import define
 define("port", default=3312, type=int)
@@ -80,7 +128,11 @@ handlers = [
     (r"/about", AboutPage),
     (r"/signup", SignupPage),
     (r"/login", LoginPage),
-    (r"/gallery", GalleryPage)
+    (r"/gallery", GalleryPage),
+    # api endpoints
+    (r"/api/v1/signup", UserSignupEP),
+    (r"/api/v1/login", UserLoginEP),
+    (r"/api/v1/user", FetchUserEP),
 ]
 
 # switch debug mode on or off
