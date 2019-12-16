@@ -14,11 +14,12 @@ def get_account(auth_token):
 
     # can we assume that possession of some auth_token is as good as security goes?
     try:
-        user_account = db.Users.objects.get(auth_token=auth_token)
-        user = json.loads(user_account.to_json())
-        return user
-    except:
-        return {'user': 'Invalid credentials provided'}
+        account = db.Users.objects.get(auth_token=auth_token)
+        return account
+    except db.DoesNotExist as err:
+        # logging: use 'err'
+        # invalid credentials were provided
+        return None
 
 def create_account(username, email, password, user_type='user'):
     # functionality as well as validity is being worked on

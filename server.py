@@ -10,25 +10,7 @@ import chef
 from chef import accounts, gallery
 
 class BaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        # internal method: does not directly return data to frontend
-        auth_token = self.get_cookie('auth_token')
-        if not auth_token:
-            query = {
-                'status': 'error',
-                'msg': 'User is not logged in',
-                'user': None
-            }
-            # how shouled this be handled?
-            # raise error or pass error message to caller
-            # if so, callers will have to check that they've gootten back an actual user
-            return query['user']
-        query = {
-            'status': 'success',
-            'msg': 'User is logged in',
-            'user': accounts.get_account(auth_token)
-        }
-        return query['user']
+    pass
 
 class APIHandler(tornado.web.RequestHandler):
     def get_auth_token(self):
@@ -43,36 +25,19 @@ class APIHandler(tornado.web.RequestHandler):
     
 class IndexPage(BaseHandler):
     def get(self):
-        user = self.get_current_user()
-        self.render('index.html', user=user)
+        self.render('index.html')
 
 class AboutPage(BaseHandler):
     def get(self):
-        user = self.get_current_user()
-        self.render('about.html', user=user)
+        self.render('about.html')
 
 class SignupPage(BaseHandler):
     def get(self):
         self.render('signup.html')
-    
-    def post(self):
-        username = self.get_argument('username', '')
-        email = self.get_argument('email', '')
-        password = self.get_argument('password', '')
-
-        auth_status = accounts.create_account(username, email, password)
-        self.write(json.dumps(auth_status))
 
 class LoginPage(BaseHandler):
     def get(self):
         self.render('login.html')
-    
-    def post(self):
-        username = self.get_argument('username', '')
-        password = self.get_argument('password', '')
-
-        auth_status = accounts.confirm_account(username, password)
-        self.write(json.dumps(auth_status))
 
 class GalleryPage(BaseHandler):
     def get(self):
@@ -90,7 +55,7 @@ class UserSignupEP(APIHandler):
         password = self.get_argument('password', '')
 
         status = accounts.create_account(username, email, password)
-        self.write(json.dumps(status))
+        self.write(status)
 
 class UserLoginEP(APIHandler):
     def post(self):
@@ -98,25 +63,36 @@ class UserLoginEP(APIHandler):
         password = self.get_argument('password', '')
 
         status = accounts.confirm_account(username, password)
-        self.write(json.dumps(status))
+        self.write(status)
 
 class FetchUserEP(APIHandler):
     def post(self):
         # auth token must be provided in request body
         auth = self.get_auth_token()
-        print(auth)
         if not auth:
             resp = {
                 'status': 'error',
                 'msg': 'Authentication credentials not provided',
-                'data': None
             }
             self.write(resp)
+            return
         
+        account = accounts.get_account(auth)
+        if not account:
+            resp = {
+                'status': 'error',
+                'msg': 'Invalid credentials provided',
+            }
+            self.write(resp)
+            return
+            
         resp = {
             'status': 'success',
-            'msg': 'User is logged in',
-            'data': accounts.get_account(auth)
+            'data': {
+                'username': account.username,
+                'email': account.email,
+                'auth_token': account.auth_token,
+            },
         }
         self.write(resp)
 

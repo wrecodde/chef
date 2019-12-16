@@ -13,6 +13,7 @@ __pycache__/
 !static/jquery/jquery.cookie.js
 !static/vue/vue.min.js
 !static/custom/scripts/app.js
+!static/custom/scripts/views.js
 
 # ignore virtual env
 venv/

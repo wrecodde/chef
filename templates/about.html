@@ -5,16 +5,12 @@
 {% end block %}
 
 {% block page_content %}
-<div class="container">
+<div class="container" id="aboutPage">
   <div class="row justify-content-center my-5">
     <div class="col-md-8">
       <div class="text-muted">
         <h1 class="display-4 text-white">About Chef</h1>
-
-        {% if user %}
-          <p>Hi, <span class="text-primary">{{user['username']}}</span></p>
-        {% end if %}
-
+          <p>Hi, <span class="text-primary">[[user.username]]</span></p>
         <p>Have at it.. let your creativity loose.</p>
         <p>Get started quick on other projects</p>
         <hr class="my-4">
@@ -23,4 +19,11 @@
     </div>
   </div>
 </div>
+{% end block %}
+
+
+{% block additional_scripts %}
+<script>
+
+</script>
 {% end block %}
